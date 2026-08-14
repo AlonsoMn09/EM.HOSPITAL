@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/deploy/" />
+  <Folder Name="/src/" />
+  <Folder Name="/src/Core/">
+    <Project Path="D:/CURSO .NET10/PROPIO/LIMPIA/EM.HOSPITAL/EM.Hospital.Application/EM.Hospital.Application.csproj" />
+    <Project Path="D:/CURSO .NET10/PROPIO/LIMPIA/EM.HOSPITAL/EM.Hospital.Domain/EM.Hospital.Domain.csproj" />
+  </Folder>
+  <Folder Name="/src/Infraestructure/">
+    <Project Path="D:/CURSO .NET10/PROPIO/LIMPIA/EM.HOSPITAL/EM.Hospital.Infraestructure/EM.Hospital.Infraestructure.csproj" />
+  </Folder>
+  <Folder Name="/src/Presentation/" />
+</Solution>

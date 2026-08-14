@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\Contracts\" />
+    <Folder Include="Common\DTO\" />
+    <Folder Include="Common\Models\" />
+    <Folder Include="Common\Utils\" />
+    <Folder Include="Common\Services\" />
+    <Folder Include="Features\" />
+  </ItemGroup>
+
+</Project>
