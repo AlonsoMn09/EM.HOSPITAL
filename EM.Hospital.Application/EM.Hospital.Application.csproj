@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Contracts\" />
-    <Folder Include="Common\DTO\" />
-    <Folder Include="Common\Models\" />
-    <Folder Include="Common\Utils\" />
-    <Folder Include="Common\Services\" />
-    <Folder Include="Features\" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.11" />
+    <PackageReference Include="Scrutor" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EM.Hospital.Domain\EM.Hospital.Domain.csproj" />
   </ItemGroup>
 
 </Project>
