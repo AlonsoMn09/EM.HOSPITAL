@@ -1,0 +1,17 @@
+services:
+  postgresql_clean:
+    image: postgres:15.3
+    restart: always
+    container_name: postgres_clean
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: Password2026
+      POSTGRES_DB: dbhospital
+    ports:
+      - "1600:5432"
+    volumes:
+      - D:\Docker\Volumenes\clean_postgresql:/var/lib/postgresql/data
+
+networks:
+  galaxy_arq_clean:
+    driver: bridge

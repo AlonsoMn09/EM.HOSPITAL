@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EM.Hospital.Application.Common.Contracts.Repositories
 {
-    public interface ISpecialityRepository : IBaseRepository<Specialty>
+    public interface IPrescriptionRepository : IBaseRepository<Prescription>
     {
     }
 }

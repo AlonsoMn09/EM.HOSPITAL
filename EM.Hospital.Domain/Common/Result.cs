@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EM.Hospital.Domain.Common
+﻿namespace EM.Hospital.Domain.Common
 {
     public class Result
     {

@@ -30,7 +30,7 @@ namespace EM.Hospital.Application.Features.Auth.Login
             var token = _authService.GenerateToken(user.Value);
             return Result.Success(new LoginResponse
             {
-                FullName = user.Value!.CustomerFullName,
+                FullName = user.Value!.PatientFullName,
                 Role = user.Value.Role,
                 AccessToken = token
             });

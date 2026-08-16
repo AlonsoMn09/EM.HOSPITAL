@@ -1,5 +1,7 @@
 <Solution>
-  <Folder Name="/deploy/" />
+  <Folder Name="/deploy/">
+    <File Path="docker-compose.yml" />
+  </Folder>
   <Folder Name="/src/" />
   <Folder Name="/src/Core/">
     <Project Path="D:/CURSO .NET10/PROPIO/LIMPIA/EM.HOSPITAL/EM.Hospital.Application/EM.Hospital.Application.csproj" />
@@ -8,5 +10,7 @@
   <Folder Name="/src/Infraestructure/">
     <Project Path="D:/CURSO .NET10/PROPIO/LIMPIA/EM.HOSPITAL/EM.Hospital.Infraestructure/EM.Hospital.Infraestructure.csproj" />
   </Folder>
-  <Folder Name="/src/Presentation/" />
+  <Folder Name="/src/Presentation/">
+    <Project Path="EM.Hospital.API/EM.Hospital.API.csproj" Id="9df2f59e-eb14-4c83-ac2f-8d5860ba800e" />
+  </Folder>
 </Solution>

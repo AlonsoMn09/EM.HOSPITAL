@@ -11,9 +11,9 @@ namespace EM.Hospital.Application.Features.Specialty.Create
 {
     public class CreateSpecialityCommandHandler : ICommandHandler<CreateSpecialityCommand, Result<Guid>>
     {
-        private readonly ISpecialityRepository _repo;
+        private readonly ISpecialtyRepository _repo;
         private readonly IUnitOfWork _unitOfWork;
-        public CreateSpecialityCommandHandler(ISpecialityRepository repo, IUnitOfWork unitOfWork)
+        public CreateSpecialityCommandHandler(ISpecialtyRepository repo, IUnitOfWork unitOfWork)
         {
             _repo = repo;
             _unitOfWork = unitOfWork;

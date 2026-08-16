@@ -13,7 +13,7 @@ namespace EM.Hospital.Domain.ValueObjects
         {
             
         }
-        public IdentityDocument(string type, string document)
+        private IdentityDocument(string type, string document)
         {
             Type = type;
             Document = document;
