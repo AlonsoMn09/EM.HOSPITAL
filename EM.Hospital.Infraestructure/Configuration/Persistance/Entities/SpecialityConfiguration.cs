@@ -11,7 +11,7 @@ namespace EM.Hospital.Infraestructure.Configuration.Persistance.Entities
     {        
         public void Configure(EntityTypeBuilder<Specialty> builder)
         {
-            builder.ToTable("Speciality");
+            builder.ToTable("specialties");
             builder.HasKey(a => a.Id);
 
             builder.Property(a => a.Name)

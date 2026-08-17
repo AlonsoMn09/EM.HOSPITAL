@@ -15,29 +15,7 @@ namespace EM.Hospital.Infraestructure.Migrations
                 name: "hospital");
 
             migrationBuilder.CreateTable(
-                name: "Doctor",
-                schema: "hospital",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    FirstName = table.Column<string>(type: "text", nullable: false),
-                    LastName = table.Column<string>(type: "text", nullable: false),
-                    Email = table.Column<string>(type: "text", nullable: false),
-                    Phone = table.Column<string>(type: "text", nullable: false),
-                    SpecialityId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Active = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    CreatedBy = table.Column<string>(type: "text", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Doctor", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Patient",
+                name: "patients",
                 schema: "hospital",
                 columns: table => new
                 {
@@ -56,11 +34,11 @@ namespace EM.Hospital.Infraestructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Patient", x => x.Id);
+                    table.PrimaryKey("PK_patients", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Speciality",
+                name: "specialties",
                 schema: "hospital",
                 columns: table => new
                 {
@@ -75,7 +53,71 @@ namespace EM.Hospital.Infraestructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Speciality", x => x.Id);
+                    table.PrimaryKey("PK_specialties", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "doctors",
+                schema: "hospital",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    FirstName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    LastName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
+                    Phone = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    speciality_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Active = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CreatedBy = table.Column<string>(type: "text", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_doctors", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_doctors_specialties_speciality_id",
+                        column: x => x.speciality_id,
+                        principalSchema: "hospital",
+                        principalTable: "specialties",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "appointments",
+                schema: "hospital",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    patient_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    doctor_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    scheduled_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    status = table.Column<int>(type: "integer", nullable: false),
+                    Active = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CreatedBy = table.Column<string>(type: "text", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_appointments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_appointments_doctors_doctor_id",
+                        column: x => x.doctor_id,
+                        principalSchema: "hospital",
+                        principalTable: "doctors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_appointments_patients_patient_id",
+                        column: x => x.patient_id,
+                        principalSchema: "hospital",
+                        principalTable: "patients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -98,44 +140,10 @@ namespace EM.Hospital.Infraestructure.Migrations
                 {
                     table.PrimaryKey("PK_doctor_schedules", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_doctor_schedules_Doctor_DoctorId",
+                        name: "FK_doctor_schedules_doctors_DoctorId",
                         column: x => x.DoctorId,
                         principalSchema: "hospital",
-                        principalTable: "Doctor",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Appointment",
-                schema: "hospital",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    PatientId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DoctorId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ScheduledAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false),
-                    Active = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    CreatedBy = table.Column<string>(type: "text", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Appointment", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Appointment_Doctor_DoctorId",
-                        column: x => x.DoctorId,
-                        principalSchema: "hospital",
-                        principalTable: "Doctor",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Appointment_Patient_PatientId",
-                        column: x => x.PatientId,
-                        principalSchema: "hospital",
-                        principalTable: "Patient",
+                        principalTable: "doctors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -162,24 +170,25 @@ namespace EM.Hospital.Infraestructure.Migrations
                 {
                     table.PrimaryKey("PK_payments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_payments_Appointment_appointment_id",
+                        name: "FK_payments_appointments_appointment_id",
                         column: x => x.appointment_id,
                         principalSchema: "hospital",
-                        principalTable: "Appointment",
+                        principalTable: "appointments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Prescription",
+                name: "prescriptions",
                 schema: "hospital",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    AppointmentId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Medications = table.Column<string>(type: "text", nullable: false),
-                    Instructions = table.Column<string>(type: "text", nullable: false),
-                    IssuedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    appointment_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    medications = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
+                    instructions = table.Column<string>(type: "character varying(4000)", maxLength: 4000, nullable: false),
+                    issued_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    AppointmentId1 = table.Column<Guid>(type: "uuid", nullable: true),
                     Active = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -188,27 +197,33 @@ namespace EM.Hospital.Infraestructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Prescription", x => x.Id);
+                    table.PrimaryKey("PK_prescriptions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Prescription_Appointment_AppointmentId",
-                        column: x => x.AppointmentId,
+                        name: "FK_prescriptions_appointments_AppointmentId1",
+                        column: x => x.AppointmentId1,
                         principalSchema: "hospital",
-                        principalTable: "Appointment",
+                        principalTable: "appointments",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_prescriptions_appointments_appointment_id",
+                        column: x => x.appointment_id,
+                        principalSchema: "hospital",
+                        principalTable: "appointments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Appointment_DoctorId",
+                name: "IX_appointments_doctor_id",
                 schema: "hospital",
-                table: "Appointment",
-                column: "DoctorId");
+                table: "appointments",
+                column: "doctor_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Appointment_PatientId",
+                name: "IX_appointments_patient_id",
                 schema: "hospital",
-                table: "Appointment",
-                column: "PatientId");
+                table: "appointments",
+                column: "patient_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_doctor_schedules_DoctorId",
@@ -217,9 +232,15 @@ namespace EM.Hospital.Infraestructure.Migrations
                 column: "DoctorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Patient_DocumentType_DocumentNumber",
+                name: "IX_doctors_speciality_id",
                 schema: "hospital",
-                table: "Patient",
+                table: "doctors",
+                column: "speciality_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_patients_DocumentType_DocumentNumber",
+                schema: "hospital",
+                table: "patients",
                 columns: new[] { "DocumentType", "DocumentNumber" },
                 unique: true);
 
@@ -231,10 +252,17 @@ namespace EM.Hospital.Infraestructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Prescription_AppointmentId",
+                name: "IX_prescriptions_appointment_id",
                 schema: "hospital",
-                table: "Prescription",
-                column: "AppointmentId",
+                table: "prescriptions",
+                column: "appointment_id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_prescriptions_AppointmentId1",
+                schema: "hospital",
+                table: "prescriptions",
+                column: "AppointmentId1",
                 unique: true);
         }
 
@@ -250,23 +278,23 @@ namespace EM.Hospital.Infraestructure.Migrations
                 schema: "hospital");
 
             migrationBuilder.DropTable(
-                name: "Prescription",
+                name: "prescriptions",
                 schema: "hospital");
 
             migrationBuilder.DropTable(
-                name: "Speciality",
+                name: "appointments",
                 schema: "hospital");
 
             migrationBuilder.DropTable(
-                name: "Appointment",
+                name: "doctors",
                 schema: "hospital");
 
             migrationBuilder.DropTable(
-                name: "Doctor",
+                name: "patients",
                 schema: "hospital");
 
             migrationBuilder.DropTable(
-                name: "Patient",
+                name: "specialties",
                 schema: "hospital");
         }
     }

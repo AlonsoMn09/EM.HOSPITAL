@@ -40,16 +40,20 @@ namespace EM.Hospital.Infraestructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<Guid>("DoctorId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("doctor_id");
 
                     b.Property<Guid>("PatientId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("patient_id");
 
                     b.Property<DateTime>("ScheduledAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("scheduled_at");
 
                     b.Property<int>("Status")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -63,7 +67,7 @@ namespace EM.Hospital.Infraestructure.Migrations
 
                     b.HasIndex("PatientId");
 
-                    b.ToTable("Appointment", "hospital");
+                    b.ToTable("appointments", "hospital");
                 });
 
             modelBuilder.Entity("EM.Hospital.Domain.Entities.Doctor", b =>
@@ -83,23 +87,26 @@ namespace EM.Hospital.Infraestructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<Guid>("SpecialityId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("speciality_id");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -109,7 +116,9 @@ namespace EM.Hospital.Infraestructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Doctor", "hospital");
+                    b.HasIndex("SpecialityId");
+
+                    b.ToTable("doctors", "hospital");
                 });
 
             modelBuilder.Entity("EM.Hospital.Domain.Entities.DoctorSchedule", b =>
@@ -192,7 +201,7 @@ namespace EM.Hospital.Infraestructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Patient", "hospital");
+                    b.ToTable("patients", "hospital");
                 });
 
             modelBuilder.Entity("EM.Hospital.Domain.Entities.Payment", b =>
@@ -251,6 +260,10 @@ namespace EM.Hospital.Infraestructure.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<Guid>("AppointmentId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("appointment_id");
+
+                    b.Property<Guid?>("AppointmentId1")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -262,14 +275,19 @@ namespace EM.Hospital.Infraestructure.Migrations
 
                     b.Property<string>("Instructions")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(4000)
+                        .HasColumnType("character varying(4000)")
+                        .HasColumnName("instructions");
 
                     b.Property<DateTime>("IssuedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("issued_at");
 
                     b.Property<string>("Medications")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)")
+                        .HasColumnName("medications");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -282,7 +300,10 @@ namespace EM.Hospital.Infraestructure.Migrations
                     b.HasIndex("AppointmentId")
                         .IsUnique();
 
-                    b.ToTable("Prescription", "hospital");
+                    b.HasIndex("AppointmentId1")
+                        .IsUnique();
+
+                    b.ToTable("prescriptions", "hospital");
                 });
 
             modelBuilder.Entity("EM.Hospital.Domain.Entities.Specialty", b =>
@@ -319,7 +340,7 @@ namespace EM.Hospital.Infraestructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Speciality", "hospital");
+                    b.ToTable("specialties", "hospital");
                 });
 
             modelBuilder.Entity("EM.Hospital.Domain.Entities.Appointment", b =>
@@ -327,7 +348,7 @@ namespace EM.Hospital.Infraestructure.Migrations
                     b.HasOne("EM.Hospital.Domain.Entities.Doctor", "Doctor")
                         .WithMany()
                         .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("EM.Hospital.Domain.Entities.Patient", "Patient")
@@ -341,11 +362,21 @@ namespace EM.Hospital.Infraestructure.Migrations
                     b.Navigation("Patient");
                 });
 
+            modelBuilder.Entity("EM.Hospital.Domain.Entities.Doctor", b =>
+                {
+                    b.HasOne("EM.Hospital.Domain.Entities.Specialty", null)
+                        .WithMany()
+                        .HasForeignKey("SpecialityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("EM.Hospital.Domain.Entities.DoctorSchedule", b =>
                 {
                     b.HasOne("EM.Hospital.Domain.Entities.Doctor", null)
                         .WithMany("DoctorSchedules")
-                        .HasForeignKey("DoctorId");
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.OwnsOne("EM.Hospital.Domain.ValueObjects.DateTimeRange", "Schedule", b1 =>
                         {
@@ -396,7 +427,7 @@ namespace EM.Hospital.Infraestructure.Migrations
                             b1.HasIndex("Type", "Document")
                                 .IsUnique();
 
-                            b1.ToTable("Patient", "hospital");
+                            b1.ToTable("patients", "hospital");
 
                             b1.WithOwner()
                                 .HasForeignKey("PatientId");
@@ -444,10 +475,14 @@ namespace EM.Hospital.Infraestructure.Migrations
             modelBuilder.Entity("EM.Hospital.Domain.Entities.Prescription", b =>
                 {
                     b.HasOne("EM.Hospital.Domain.Entities.Appointment", null)
-                        .WithOne("Prescription")
+                        .WithOne()
                         .HasForeignKey("EM.Hospital.Domain.Entities.Prescription", "AppointmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("EM.Hospital.Domain.Entities.Appointment", null)
+                        .WithOne("Prescription")
+                        .HasForeignKey("EM.Hospital.Domain.Entities.Prescription", "AppointmentId1");
                 });
 
             modelBuilder.Entity("EM.Hospital.Domain.Entities.Appointment", b =>
