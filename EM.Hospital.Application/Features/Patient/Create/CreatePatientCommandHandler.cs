@@ -21,7 +21,7 @@ namespace EM.Hospital.Application.Features.Patient.Create
         public async Task<Result<Guid>> HandlerAsync(CreatePatientCommand command, CancellationToken cancellationToken = default)
         {
             var client = await _repository.FindByPredicateAsync(p => p.Document.Type == command.DocumentType && p.Document.Document == command.DocumentNumber);
-            if (client == null)
+            if (client != null)
                 return Result.Failure<Guid>("Patient with the same document already exists");
             var document = IdentityDocument.Create(command.DocumentType, command.DocumentNumber); 
             if(!document.IsSuccess)

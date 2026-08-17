@@ -29,13 +29,15 @@ namespace EM.Hospital.Infraestructure.Configuration.Persistance.Context
         {
             optionsBuilder.UseNpgsql("Host=localhost;Port=1600;Database=dbhospital;Username=admin;Password=Password2026");
         }
-        public DbSet<Specialty> specialties { get; set; }
+        //public DbSet<Specialty> specialties { get; set; }
         //public DbSet<Patient> patients { get; set; }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
+        {            
             modelBuilder.HasDefaultSchema("hospital");
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(HospitalDbContext).Assembly);
+            base.OnModelCreating(modelBuilder);
+
         }
     }
 }

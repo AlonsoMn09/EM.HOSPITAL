@@ -14,6 +14,8 @@ namespace EM.Hospital.Domain.Entities
         public string Email { get; private set; }
         public string Phone { get; private set; }
         public IdentityDocument Document { get; private set; }
+        private readonly List<Appointment> _appointments = new List<Appointment>();
+        public IReadOnlyCollection<Appointment> Appointments => _appointments.AsReadOnly(); 
         public Patient()
         {
             
