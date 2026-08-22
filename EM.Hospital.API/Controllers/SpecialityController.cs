@@ -8,7 +8,6 @@ namespace EM.Hospital.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class SpecialityController : BaseController
     {
         private readonly IDispatcher _dispatcher;

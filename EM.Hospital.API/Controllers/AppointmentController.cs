@@ -1,12 +1,27 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EM.Hospital.Application.Common.Contracts.CQRS;
+using EM.Hospital.Application.Features.Appointment.Create;
+using EM.Hospital.Application.Features.Specialty.Create;
+using EM.Hospital.Domain.Common;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EM.Hospital.API.Controllers
 {
-    public class AppointmentController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AppointmentController : BaseController
     {
-        public IActionResult Index()
+        private readonly IDispatcher _dispatcher;
+
+        public AppointmentController(IDispatcher dispatcher)
         {
-            return View();
+            _dispatcher = dispatcher;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] CreateAppointmentCommand command)
+        {
+            var result = await _dispatcher.SendAsync<CreateAppointmentCommand, Result<Guid>>(command);
+            return HandleResult(result);
         }
     }
 }

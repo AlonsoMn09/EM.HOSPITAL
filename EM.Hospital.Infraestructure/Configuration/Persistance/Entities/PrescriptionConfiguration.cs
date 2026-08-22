@@ -17,8 +17,11 @@ namespace EM.Hospital.Infraestructure.Configuration.Persistance.Entities
             builder.Property(p => p.Instructions).HasColumnName("instructions").HasMaxLength(4000);
             builder.Property(p => p.IssuedAt).HasColumnName("issued_at");
 
-            // set up foreign key from Prescription to Appointment (handled in AppointmentConfiguration as well)
-            builder.HasOne<Appointment>().WithOne().HasForeignKey<Prescription>(p => p.AppointmentId).OnDelete(DeleteBehavior.Cascade);
+            
+            builder.HasOne(p => p.appointment)
+                .WithOne(a => a.Prescription)
+                .HasForeignKey<Prescription>(p => p.AppointmentId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
